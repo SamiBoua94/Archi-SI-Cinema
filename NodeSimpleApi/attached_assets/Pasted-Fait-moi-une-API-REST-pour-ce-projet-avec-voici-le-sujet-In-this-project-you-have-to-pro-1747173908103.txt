@@ -1,0 +1,87 @@
+Fait moi une API REST pour ce projet avec  :
+voici le sujet :
+"""
+In this project you have to propose a Web Application that provide de following REST services about Movies presentations and schedule on the different Parisian Movie Theatres. To have a better idea what we are expecting from you as a project, please visit AlloCiné web site. 
+The first service is provided to Movies Theatres so that they can post new movies and their schedule.  For this, you need to propose a web page to movies owners, with a login so that they can post movie’s details: Title, duration, Language (subtitles if needed), director, main actors, and min age required. To make it simple we suppose that a movie is proposed from a starting date to an end date, three days per week (and a given starting time for each movie session).  Of course you need to specify the city where the movie is displayed (the address of the Movie Theatre)
+1)	A second service will be used to display all the movies proposed in a given city. This will be through a free access web page, no login is required. 
+2)	Each Movie proposed as a response to the web service displaying the list of movies per a given city  is actually a web service that displays the details of the Movies (given in question 1)
+For this project, you can use Java, Eclipse, JAX-RS, Jersey Jackson and Tomcat, but you are really free to use the technologies you want. You can either use a MySQL database or on memory database like HSQLDB to store the information about the movies. An object oriented collection initiated at the Starting of the project execution is fine as well.
+"""
+choix qu'on a fait  :
+2. Besoins et Exigences du Projet (Strict Minimum)
+Gérer les informations sur les films : Titre, durée, Langue (sous-titres si besoin), réalisateur, acteurs principaux, âge minimum requis.
+Gérer la programmation : Date de début, date de fin, trois jours par semaine, heure de début de session.
+Gérer la localisation : Ville et adresse du cinéma.
+ 
+Implémenter 2 services REST spécifiques :
+Publication/Connexion
+ 
+Permet aux cinémas de poster (ajouter/modifier) de nouveaux films et leur programmation.
+ 
+Requiert une page web avec login pour y accéder. L'accès doit être protégé (authentification/autorisation).
+Liste par Ville et Détails du Film
+ 
+Permet d'afficher tous les films proposés dans une ville donnée.
+ 
+Accès libre, sans login.
+Doit être accessible via une page web.
+ 
+Permet d'afficher les informations complètes d'un film spécifique."""
+
+Choix Technologiques et Approche Architecturale 
+Style Architectural : REST.
+ 
+Format d'Échange de Données : JSON.
+ 
+Architecture d'Application : Modulaire (inspirée Micro services).
+
+Stockage des Données : MySQL.
+
+Technologies d'Implémentation (Serveur) : Node.js.
+
+Voici le MCD :
+ENTITE Cinema
+  id : entier, auto_increment, clé_primaire
+  nom : texte, obligatoire
+  adresse : texte, obligatoire
+  ville : texte, obligatoire
+  login : texte, obligatoire, unique
+  mot_de_passe : texte, obligatoire
+  email : texte, obligatoire
+  created_at : date_heure, obligatoire
+
+ENTITE Film
+  id : entier, auto_increment, clé_primaire
+  titre : texte, obligatoire
+  duree : entier, obligatoire
+  langue : texte, obligatoire
+  sous_titres : booléen, défaut 'false'
+  realisateur : texte, obligatoire
+  acteurs_principaux : texte, obligatoire
+  synopsis : texte
+  age_minimum : texte, obligatoire
+  genres : texte
+  poster : texte, obligatoire, défaut '/images/default-poster.jpg'
+  created_at : date_heure, obligatoire
+
+ENTITE Programmation
+  id : entier, auto_increment, clé_primaire
+  filmid : entier, obligatoire, cléétrangère -> Film.id
+  cinemaid : entier, obligatoire, cléétrangère -> Cinema.id
+  date_debut : date, obligatoire
+  date_fin : date, obligatoire
+  jour_1 : texte, obligatoire
+  jour_2 : texte, obligatoire
+  jour_3 : texte, obligatoire
+  heure_debut : heure, obligatoire
+  created_at : date_heure, obligatoire
+
+ASSOCIATION Projeter
+  Cinema (1,N) -> Programmation (1,1)
+  // Un cinéma peut proposer plusieurs programmations
+  // Une programmation appartient à un seul cinéma
+
+ASSOCIATION Programmer
+  Film (1,N) -> Programmation (1,1)
+  // Un film peut avoir plusieurs programmations
+  // Une programmation concerne un seul film 
